@@ -1,0 +1,22 @@
+# Python environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Private credentials
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.log
+.DS_Store
+# Uploaded resumes and private documents
+uploads/*
+!uploads/.gitkeep

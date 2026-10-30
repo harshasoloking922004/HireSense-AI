@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job | HireSense AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        h1 {
+            color: #2563eb;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 110px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Job Details</h1>
+
+    <form method="POST">
+
+        <label>Job Title</label>
+        <input type="text" name="title"
+               value="{{ job.get('title', '') }}" required>
+
+        <label>Company</label>
+        <input type="text" name="company"
+               value="{{ job.get('company', '') }}" required>
+
+        <label>Location</label>
+        <input type="text" name="location"
+               value="{{ job.get('location', '') }}">
+
+        <label>Required Skills</label>
+        <input type="text" name="required_skills"
+               value="{{ job.get('required_skills', [])|join(', ') }}">
+
+        <label>Experience (Years)</label>
+        <input type="number" name="experience"
+               min="0" step="0.1"
+               value="{{ job.get('experience', 0) }}">
+
+        <label>Job Description</label>
+        <textarea name="description">{{ job.get('description', '') }}</textarea>
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+
+    <a href="/manage-jobs" class="back">Back to Manage Jobs</a>
+
+</div>
+
+</body>
+</html>

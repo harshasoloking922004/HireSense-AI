@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Analysis | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>{{ name }}</span>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-header">
+
+            <h1>AI Resume Analysis</h1>
+
+            <p>
+                Analysis results for {{ filename }}
+            </p>
+
+        </div>
+
+
+        <!-- AI RESUME SCORE -->
+
+        <div class="dashboard-card">
+
+            <h2>AI Resume Score</h2>
+
+            <div class="ai-score">
+                {{ ai_score }} / 100
+            </div>
+
+            <p>
+                Recommendation:
+                <strong>{{ recommendation }}</strong>
+            </p>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- PREDICTED CAREER CATEGORY -->
+
+        <div class="dashboard-card">
+
+            <h2>Predicted Career Category</h2>
+
+            <div class="role-result">
+                {{ predicted_role }}
+            </div>
+
+            {% if role_confidence is not none %}
+
+            <p>
+                Role Confidence:
+                <strong>{{ role_confidence }}%</strong>
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <br>
+
+
+        <!-- RESUME INFORMATION -->
+
+        <div class="dashboard-card">
+
+            <h2>Resume Information</h2>
+
+            <div class="resume-info">
+
+                <p>
+                    <strong>Experience:</strong>
+                    {{ experience }} years
+                </p>
+
+                <p>
+                    <strong>Education:</strong>
+                    {{ education }}
+                </p>
+
+                <p>
+                    <strong>Certifications:</strong>
+                    {{ certifications }}
+                </p>
+
+                <p>
+                    <strong>Projects:</strong>
+                    {{ projects }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- DETECTED SKILLS -->
+
+        <div class="dashboard-card">
+
+            <h2>Detected Skills</h2>
+
+            <p>
+                We detected {{ skill_count }} skills from your resume.
+            </p>
+
+            {% if skills %}
+
+                <div class="skills-container">
+
+                    {% for skill in skills %}
+
+                        <span class="skill-tag">
+                            {{ skill }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No supported skills were detected.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <br>
+
+
+        <!-- EXTRACTED TEXT -->
+
+        <div class="dashboard-card">
+
+            <h2>Extracted Resume Text</h2>
+
+            <div class="resume-text">
+                {{ resume_text }}
+            </div>
+
+        </div>
+
+
+        <br>
+
+        <a href="/candidate-dashboard">
+            ← Back to Candidate Dashboard
+        </a>
+
+    </div>
+
+</body>
+
+</html>

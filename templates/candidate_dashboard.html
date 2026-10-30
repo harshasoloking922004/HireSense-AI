@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Dashboard | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+            <span>Welcome, {{ name }}</span>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-header">
+
+            <div>
+                <h1>Candidate Dashboard</h1>
+
+                <p>
+                    Find the right opportunities with AI-powered
+                    resume analysis and job matching.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+            <!-- Upload Resume -->
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">📄</div>
+
+                <h2>Upload Resume</h2>
+
+                <p>
+                    Upload your PDF or DOCX resume for AI analysis.
+                </p>
+
+                <a href="/upload-resume" class="dashboard-btn">
+                    Upload Resume
+                </a>
+
+            </div>
+
+
+            <!-- AI Resume Score -->
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">🤖</div>
+
+                <h2>AI Resume Score</h2>
+
+                <p>
+                    Analyze your resume and receive an AI-generated
+                    score.
+                </p>
+
+                <a href="/analyze-resume" class="dashboard-btn">
+                    Analyze Resume
+                </a>
+
+            </div>
+
+
+            <!-- Job Matching -->
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">💼</div>
+
+                <h2>Job Matching</h2>
+                <div class="dashboard-card">
+
+    <div class="dashboard-icon">⭐</div>
+
+    <h2>Recommended Jobs</h2>
+
+    <p>
+        View jobs automatically ranked according to
+        your resume skills.
+    </p>
+
+    <a href="/recommended-jobs"
+       class="dashboard-btn">
+
+        View Recommendations
+
+    </a>
+
+</div>
+
+                <p>
+                    Discover jobs that match your skills and experience.
+                </p>
+
+                <a href="/jobs" class="dashboard-btn">
+                    Find Jobs
+                </a>
+
+            </div>
+
+
+            <!-- Skill Gap -->
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">📊</div>
+
+                <h2>Skill Gap</h2>
+
+                <p>
+                    Identify missing skills and improve your
+                    career profile.
+                </p>
+
+                <a href="/skill-gap" class="dashboard-btn">
+    View Skills
+</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-section">
+
+            <h2>Recent Activity</h2>
+
+            <div class="activity-box">
+
+                <p>
+                    No activity yet.
+                </p>
+
+                <span>
+                    Upload your resume to get started.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

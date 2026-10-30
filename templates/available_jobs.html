@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Available Jobs | HireSense AI
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .message {
+            background: #fff7ed;
+            color: #9a3412;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .jobs-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+
+            gap: 25px;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .job-card h2 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .company {
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #6b7280;
+            margin-bottom: 18px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .skill {
+            background: #e0e7ff;
+            color: #3730a3;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+        .experience {
+            color: #374151;
+            margin-bottom: 18px;
+        }
+
+        .description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .match-btn {
+            display: block;
+            width: 100%;
+
+            text-align: center;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .match-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .apply-btn {
+            width: 100%;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #16a34a;
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .apply-btn:hover {
+            background: #15803d;
+        }
+
+        .already-applied {
+            display: block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: #e5e7eb;
+
+            color: #374151;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav class="navbar">
+
+        <div class="logo">
+            HireSense AI
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/candidate-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/applications">
+                My Applications
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+
+        <h1>
+            Available Jobs
+        </h1>
+
+
+        <p class="subtitle">
+            Find opportunities and check how well your resume matches each job.
+        </p>
+
+
+        {% if message %}
+
+            <div class="message">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+
+        {% if jobs %}
+
+
+            <div class="jobs-grid">
+
+
+                {% for job in jobs %}
+
+
+                    <div class="job-card">
+
+
+                        <h2>
+                            {{ job.title }}
+                        </h2>
+
+
+                        <div class="company">
+                            {{ job.company }}
+                        </div>
+
+
+                        <div class="location">
+                            📍 {{ job.location }}
+                        </div>
+
+
+                        <div class="label">
+                            Required Skills
+                        </div>
+
+
+                        <div class="skills">
+
+
+                            {% for skill in job.required_skills %}
+
+                                <span class="skill">
+                                    {{ skill }}
+                                </span>
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+                        <div class="experience">
+
+                            <strong>
+                                Experience:
+                            </strong>
+
+                            {{ job.experience }} years
+
+                        </div>
+
+
+                        <div class="description">
+
+                            {{ job.description }}
+
+                        </div>
+
+
+                        <div class="button-container">
+
+
+                            <!-- AI JOB MATCH -->
+
+                            <a
+                                href="/job-match/{{ job._id }}"
+                                class="match-btn"
+                            >
+                                Check AI Job Match
+                            </a>
+
+
+                            <!-- APPLY NOW -->
+
+                            {% if applied_job_ids and
+                                  job._id|string in applied_job_ids %}
+
+
+                                <div class="already-applied">
+
+                                    ✅ Already Applied
+
+                                </div>
+
+
+                            {% else %}
+
+
+                                <form
+                                    method="POST"
+                                    action="/apply/{{ job._id }}"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="apply-btn"
+                                    >
+                                        Apply Now
+                                    </button>
+
+                                </form>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty">
+
+                <h2>
+                    No Jobs Available
+                </h2>
+
+                <p>
+                    Recruiters have not posted any jobs yet.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</body>
+
+</html>

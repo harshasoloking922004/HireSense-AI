@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Gap Analysis | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .skill-gap-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .skill-gap-header {
+            margin-bottom: 30px;
+        }
+
+        .skill-gap-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .skill-gap-header p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .success-box {
+            background: #dcfce7;
+            color: #166534;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .gap-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gap-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .gap-card h2 {
+            margin-bottom: 18px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            padding: 8px 13px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 14px;
+        }
+
+        .missing-tag {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty-text {
+            color: #6b7280;
+        }
+
+        .back-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .gap-btn {
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .gap-btn.secondary {
+            background: #374151;
+        }
+
+        @media (max-width: 700px) {
+            .gap-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>
+                Welcome, {{ name }}
+            </span>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="skill-gap-container">
+
+        <div class="skill-gap-header">
+
+            <h1>Skill Gap Analysis</h1>
+
+            <p>
+                See the skills detected in your resume and the skills
+                missing from the latest job you checked.
+            </p>
+
+        </div>
+
+
+        {% if job_title %}
+
+            <div class="info-box">
+
+                Skill gap for:
+                <strong>{{ job_title }}</strong>
+
+                {% if match_percentage is not none %}
+                    <br>
+                    Job Match:
+                    <strong>{{ match_percentage }}%</strong>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+
+        {% if message %}
+
+            <div class="info-box">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+
+        {% if job_title and not missing_skills %}
+
+            <div class="success-box">
+                ✅ No missing required skills were found.
+            </div>
+
+        {% endif %}
+
+
+        <div class="gap-grid">
+
+            <div class="gap-card">
+
+                <h2>Your Current Skills</h2>
+
+                {% if candidate_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in candidate_skills %}
+
+                            <span class="skill-tag">
+                                {{ skill }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty-text">
+                        No skills detected yet.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="gap-card">
+
+                <h2>Skills to Improve</h2>
+
+                {% if missing_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in missing_skills %}
+
+                            <span class="skill-tag missing-tag">
+                                {{ skill }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty-text">
+                        No missing skills to display.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="back-buttons">
+
+            <a href="/jobs" class="gap-btn">
+                Browse Jobs
+            </a>
+
+            <a href="/candidate-dashboard"
+               class="gap-btn secondary">
+                Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

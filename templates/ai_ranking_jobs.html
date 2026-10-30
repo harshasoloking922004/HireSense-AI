@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Candidate Ranking | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .job-card {
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .job-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .company {
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .skill {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>
+                Welcome, {{ name }}
+            </span>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <div class="header">
+
+            <h1>
+                AI Candidate Ranking
+            </h1>
+
+            <p>
+                Select one of your jobs to rank candidates according
+                to resume score and job-skill matching.
+            </p>
+
+        </div>
+
+
+        {% if jobs %}
+
+            <div class="jobs-grid">
+
+                {% for job in jobs %}
+
+                    <div class="job-card">
+
+                        <h2>
+                            {{ job.title }}
+                        </h2>
+
+                        <div class="company">
+                            {{ job.company }}
+                        </div>
+
+                        <div class="location">
+                            📍 {{ job.location }}
+                        </div>
+
+                        <strong>
+                            Required Skills
+                        </strong>
+
+                        <div class="skills">
+
+                            {% for skill in job.required_skills %}
+
+                                <span class="skill">
+                                    {{ skill }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <a
+                            href="/ai-ranking/{{ job._id }}"
+                            class="btn"
+                        >
+                            Rank Candidates
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>
+                    No Jobs Found
+                </h2>
+
+                <p>
+                    Post a job before using AI Candidate Ranking.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

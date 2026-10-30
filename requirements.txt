@@ -1,0 +1,8 @@
+Flask
+pymongo
+python-dotenv
+pypdf
+python-docx
+joblib
+pandas
+scikit-learn==1.6.1

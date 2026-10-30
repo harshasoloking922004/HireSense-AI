@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Resume | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+            <span>{{ name }}</span>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-header">
+
+            <h1>Upload Your Resume</h1>
+
+            <p>
+                Upload your latest resume in PDF or DOCX format.
+            </p>
+
+        </div>
+
+        <div class="dashboard-card resume-upload-card">
+
+            <form action="/upload-resume"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <label for="resume">
+                    Select Resume
+                </label>
+
+                <input
+                    type="file"
+                    id="resume"
+                    name="resume"
+                    accept=".pdf,.docx"
+                    required
+                >
+
+                <button type="submit" class="dashboard-btn">
+                    Upload Resume
+                </button>
+
+            </form>
+
+        </div>
+
+        <br>
+
+        <a href="/candidate-dashboard">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

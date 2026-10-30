@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications | HireSense AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        nav {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .message, .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .application {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 12px #0000000a;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .company {
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .status {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            margin-top: 20px;
+            color: #475569;
+        }
+
+        .skills {
+            margin-top: 18px;
+            line-height: 1.8;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 18px;
+            background: #2563eb;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <strong>HireSense AI</strong>
+        <div>
+            <a href="/candidate-dashboard">Dashboard</a>
+            <a href="/jobs">Available Jobs</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>My Applications</h1>
+        <p class="subtitle">
+            Track the jobs you have applied for.
+        </p>
+
+        {% if message %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+
+        {% if applications %}
+            <p>Total applications: {{ applications|length }}</p>
+
+            {% for application in applications %}
+                <div class="application">
+                    <div class="top">
+                        <div>
+                            <h2>
+                                {{ application.get("job_title") or "Job Title Not Available" }}
+                            </h2>
+                            <div class="company">
+                                {{ application.get("company") or "Company Not Available" }}
+                            </div>
+                        </div>
+
+                        <span class="status">
+                            {{ application.get("status", "Applied") }}
+                        </span>
+                    </div>
+
+                    <div class="details">
+                        <span>
+                            📍 {{ application.get("location") or "Not specified" }}
+                        </span>
+
+                        <span>
+                            🤖 Resume Score:
+                            {{ application.get("ai_resume_score", 0) }}%
+                        </span>
+
+                        <span>
+                            🎯 Job Match:
+                            {{ application.get("job_match_score", 0) }}%
+                        </span>
+
+                        <span>
+                            📅 Applied:
+                            {% if application.get("applied_at") %}
+                                {{ application.get("applied_at").strftime("%d %b %Y") }}
+                            {% else %}
+                                Date unavailable
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="skills">
+                        <strong>Matching Skills:</strong>
+                        {{ application.get("matching_skills", [])|join(", ") or "None" }}
+                        <br>
+
+                        <strong>Skills to Improve:</strong>
+                        {{ application.get("missing_skills", [])|join(", ") or "None" }}
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% elif not message %}
+            <div class="empty">
+                <h2>No applications yet</h2>
+                <p>You have not applied for any jobs yet.</p>
+                <a class="back" href="/jobs">Explore Available Jobs</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

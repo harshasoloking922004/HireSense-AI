@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Recommended Jobs | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .recommended-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+        .message {
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(310px, 1fr));
+
+            gap: 25px;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .job-title {
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .company {
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .location {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .match-score {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .skill {
+            background: #dcfce7;
+            color: #166534;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .job-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+
+            padding: 12px;
+
+            background: #2563eb;
+            color: white;
+
+            text-decoration: none;
+            font-weight: bold;
+
+            border-radius: 8px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .secondary-btn {
+            background: #374151;
+        }
+
+        .secondary-btn:hover {
+            background: #111827;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>
+                Welcome, {{ name }}
+            </span>
+
+            <a href="/logout"
+               class="logout-btn">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="recommended-container">
+
+        <div class="page-header">
+
+            <h1>
+                Recommended Jobs
+            </h1>
+
+            <p>
+                Jobs are sorted by how closely their required skills
+                match the skills detected in your resume.
+            </p>
+
+        </div>
+
+
+        {% if message %}
+
+            <div class="message">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+
+        {% if jobs %}
+
+            <div class="jobs-grid">
+
+                {% for job in jobs %}
+
+                    <div class="job-card">
+
+                        <h2 class="job-title">
+                            {{ job.title }}
+                        </h2>
+
+                        <div class="company">
+                            {{ job.company }}
+                        </div>
+
+                        <div class="location">
+                            📍 {{ job.location }}
+                        </div>
+
+
+                        <div class="match-score">
+
+                            {{ job.match_percentage }}% Match
+
+                        </div>
+
+
+                        {% if job.matching_skills %}
+
+                            <div class="section-title">
+                                Matching Skills
+                            </div>
+
+                            <div class="skills">
+
+                                {% for skill in job.matching_skills %}
+
+                                    <span class="skill">
+                                        {{ skill }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if job.missing_skills %}
+
+                            <div class="section-title">
+                                Missing Skills
+                            </div>
+
+                            <div class="skills">
+
+                                {% for skill in job.missing_skills %}
+
+                                    <span class="skill missing">
+                                        {{ skill }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="job-description">
+
+                            {{ job.description }}
+
+                        </div>
+
+
+                        <a
+                            href="/job-match/{{ job._id }}"
+                            class="btn"
+                        >
+                            View Full Match
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>
+                    No Recommended Jobs
+                </h2>
+
+                <p>
+                    No jobs are available yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="bottom-buttons">
+
+            <a
+                href="/jobs"
+                class="btn"
+            >
+                Browse All Jobs
+            </a>
+
+            <a
+                href="/candidate-dashboard"
+                class="btn secondary-btn"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

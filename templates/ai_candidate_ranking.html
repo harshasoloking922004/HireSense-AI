@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Ranking | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .container {
+            width: 94%;
+            max-width: 1250px;
+            margin: 40px auto;
+        }
+
+        .header-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .header-card h1 {
+            margin-bottom: 8px;
+        }
+
+        .company {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .location {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .formula {
+            margin-top: 15px;
+            padding: 12px;
+            background: #eff6ff;
+            color: #1e40af;
+            border-radius: 8px;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #374151;
+        }
+
+        .rank {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .ranking-score {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .resume-score {
+            font-weight: bold;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-width: 150px;
+        }
+
+        .skill {
+            padding: 6px 9px;
+            border-radius: 15px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 12px;
+        }
+
+        .missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .back {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .secondary {
+            background: #374151;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>
+                Welcome, {{ name }}
+            </span>
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <div class="header-card">
+
+            <h1>
+                {{ job.title }}
+            </h1>
+
+            <div class="company">
+                {{ job.company }}
+            </div>
+
+            <div class="location">
+                📍 {{ job.location }}
+            </div>
+
+            <div class="formula">
+
+                Ranking Score =
+                70% Job Match +
+                30% AI Resume Score
+
+            </div>
+
+        </div>
+
+
+        <div class="table-card">
+
+            {% if candidates %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Rank
+                            </th>
+
+                            <th>
+                                Candidate
+                            </th>
+
+                            <th>
+                                Ranking Score
+                            </th>
+
+                            <th>
+                                Job Match
+                            </th>
+
+                            <th>
+                                AI Resume Score
+                            </th>
+
+                            <th>
+                                Career Category
+                            </th>
+
+                            <th>
+                                Experience
+                            </th>
+
+                            <th>
+                                Matching Skills
+                            </th>
+
+                            <th>
+                                Missing Skills
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for candidate in candidates %}
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="rank">
+                                        #{{ loop.index }}
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+                                        {{ candidate.name }}
+                                    </strong>
+
+                                    <br>
+
+                                    {{ candidate.email }}
+
+                                    <br><br>
+
+                                    <a
+                                        href="/candidate/{{ candidate.id }}"
+                                        class="btn"
+                                    >
+                                        View Details
+                                    </a>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="ranking-score">
+                                        {{ candidate.ranking_score }}%
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ candidate.job_match }}%
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="resume-score">
+
+                                        {{ candidate.ai_resume_score }}
+
+                                        / 100
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ candidate.predicted_role }}
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ candidate.experience }}
+                                    years
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if candidate.matching_skills %}
+
+                                        <div class="skills">
+
+                                            {% for skill in candidate.matching_skills %}
+
+                                                <span class="skill">
+                                                    {{ skill }}
+                                                </span>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    {% else %}
+
+                                        None
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if candidate.missing_skills %}
+
+                                        <div class="skills">
+
+                                            {% for skill in candidate.missing_skills %}
+
+                                                <span class="skill missing">
+                                                    {{ skill }}
+                                                </span>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    {% else %}
+
+                                        None
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% else %}
+
+                <div class="empty">
+
+                    <h2>
+                        No Candidates Found
+                    </h2>
+
+                    <p>
+                        Candidates will appear after resumes are uploaded.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="back">
+
+            <a
+                href="/ai-ranking"
+                class="btn"
+            >
+                ← Back to Jobs
+            </a>
+
+            <a
+                href="/recruiter-dashboard"
+                class="btn secondary"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

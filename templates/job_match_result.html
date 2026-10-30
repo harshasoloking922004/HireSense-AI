@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Match Result | HireSense AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .job-title {
+            color: #1f2937;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .company {
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .score-card {
+            text-align: center;
+        }
+
+        .score-heading {
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 58px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 15px 0;
+        }
+
+        .score-bar {
+            width: 100%;
+            max-width: 650px;
+            height: 18px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+        }
+
+        .score-fill {
+            height: 100%;
+            width: {{ match_percentage }}%;
+            background: #2563eb;
+            border-radius: 20px;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .section-title {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 14px;
+        }
+
+        .matching {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .experience-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .experience-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .experience-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .experience-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .met {
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .not-met {
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .job-description {
+            color: #6b7280;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .empty-text {
+            color: #6b7280;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn.secondary {
+            background: #374151;
+        }
+
+        .btn.secondary:hover {
+            background: #111827;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .job-title {
+                font-size: 26px;
+            }
+
+            .score {
+                font-size: 46px;
+            }
+
+            .nav-links a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            HireSense AI
+        </div>
+
+        <div class="nav-links">
+            <a href="/candidate-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/jobs">
+                Jobs
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <!-- Job Information -->
+        <div class="card">
+
+            <h1 class="job-title">
+                {{ job.title }}
+            </h1>
+
+            <div class="company">
+                {{ job.company }}
+            </div>
+
+            <div class="location">
+                📍 {{ job.location }}
+            </div>
+
+        </div>
+
+
+        <!-- AI Match Score -->
+        <div class="card score-card">
+
+            <h2 class="score-heading">
+                AI Job Match Score
+            </h2>
+
+            <div class="score">
+                {{ match_percentage }}%
+            </div>
+
+            <div class="score-bar">
+                <div class="score-fill"></div>
+            </div>
+
+            <div class="status">
+                {{ match_status }}
+            </div>
+
+        </div>
+
+
+        <!-- Candidate Skills -->
+        <div class="card">
+
+            <h2 class="section-title">
+                Your Skills
+            </h2>
+
+            {% if candidate_skills %}
+
+                <div class="skills">
+
+                    {% for skill in candidate_skills %}
+
+                        <span class="skill">
+                            {{ skill }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="empty-text">
+                    No skills were detected from your resume.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Matching Skills -->
+        <div class="card">
+
+            <h2 class="section-title">
+                Matching Skills
+            </h2>
+
+            {% if matching_skills %}
+
+                <div class="skills">
+
+                    {% for skill in matching_skills %}
+
+                        <span class="skill matching">
+                            {{ skill }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="empty-text">
+                    No required skills matched yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Missing Skills -->
+        <div class="card">
+
+            <h2 class="section-title">
+                Missing Skills
+            </h2>
+
+            {% if missing_skills %}
+
+                <div class="skills">
+
+                    {% for skill in missing_skills %}
+
+                        <span class="skill missing">
+                            {{ skill }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="empty-text">
+                    No required skills are missing.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Experience Comparison -->
+        <div class="card">
+
+            <h2 class="section-title">
+                Experience Comparison
+            </h2>
+
+            <div class="experience-box">
+
+                <div class="experience-item">
+
+                    <strong>
+                        Your Experience
+                    </strong>
+
+                    <div class="experience-value">
+                        {{ candidate_experience }} years
+                    </div>
+
+                </div>
+
+
+                <div class="experience-item">
+
+                    <strong>
+                        Required Experience
+                    </strong>
+
+                    <div class="experience-value">
+                        {{ required_experience }} years
+                    </div>
+
+                </div>
+
+
+                <div class="experience-item">
+
+                    <strong>
+                        Experience Status
+                    </strong>
+
+                    {% if experience_met %}
+
+                        <span class="met">
+                            Requirement Met ✅
+                        </span>
+
+                    {% else %}
+
+                        <span class="not-met">
+                            Requirement Not Met ⚠️
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Job Description -->
+        <div class="card">
+
+            <h2 class="section-title">
+                Job Description
+            </h2>
+
+            <p class="job-description">
+                {{ job.description }}
+            </p>
+
+        </div>
+
+
+        <!-- Navigation -->
+        <div class="card">
+
+            <div class="buttons">
+
+                <a href="/jobs" class="btn">
+                    ← Browse Jobs
+                </a>
+
+                <a
+                    href="/candidate-dashboard"
+                    class="btn secondary"
+                >
+                    Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

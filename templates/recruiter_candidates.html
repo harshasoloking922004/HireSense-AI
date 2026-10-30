@@ -1,0 +1,120 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications | HireSense AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .container { width: 90%; max-width: 1200px; margin: 40px auto; }
+        .header { margin-bottom: 25px; }
+        .header p { color: #6b7280; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat, .application-card, .empty { background: white; padding: 22px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,.06); }
+        .stat h3 { margin: 0 0 8px; color: #6b7280; font-size: 14px; }
+        .stat p { margin: 0; font-size: 27px; font-weight: bold; }
+        .application-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .application-card h2 { margin: 0 0 8px; }
+        .muted { color: #6b7280; overflow-wrap: anywhere; }
+        .details { line-height: 1.8; margin: 18px 0; }
+        .skills { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+        .skill { background: #e0e7ff; color: #3730a3; padding: 5px 9px; border-radius: 20px; font-size: 13px; }
+        .status-form { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        select, button { padding: 10px; border-radius: 7px; border: 1px solid #d1d5db; }
+        button { background: #2563eb; color: white; border: none; cursor: pointer; }
+        .message { background: #dcfce7; padding: 12px; border-radius: 8px; margin-bottom: 20px; }
+        .empty { text-align: center; color: #6b7280; }
+    </style>
+</head>
+<body>
+    <nav class="dashboard-navbar">
+        <div class="logo">Hire<span>Sense</span> AI</div>
+        <div class="dashboard-nav-right">
+            <span>Welcome, {{ name }}</span>
+            <a href="/recruiter-dashboard">Dashboard</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="header">
+            <h1>Candidate Applications</h1>
+            <p>Review applicants and update their application status.</p>
+        </div>
+
+        {% if message %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+
+        <div class="stats">
+            <div class="stat"><h3>Total Applications</h3><p>{{ status_counts.total }}</p></div>
+            <div class="stat"><h3>Applied</h3><p>{{ status_counts.applied }}</p></div>
+            <div class="stat"><h3>Under Review</h3><p>{{ status_counts.under_review }}</p></div>
+            <div class="stat"><h3>Shortlisted</h3><p>{{ status_counts.shortlisted }}</p></div>
+            <div class="stat"><h3>Rejected</h3><p>{{ status_counts.rejected }}</p></div>
+        </div>
+
+        {% if applications %}
+            <div class="application-grid">
+                {% for application in applications %}
+                    <div class="application-card">
+                        <h2>{{ application.candidate_name or "Candidate" }}</h2>
+                        <div class="muted">{{ application.candidate_email or "Email unavailable" }}</div>
+
+                        <div class="details">
+                            <p><strong>Job:</strong> {{ application.job_title or "Not specified" }}</p>
+                            <p><strong>Company:</strong> {{ application.company or "Not specified" }}</p>
+                            <p><strong>Location:</strong> {{ application.location or "Not specified" }}</p>
+                            <p><strong>AI Resume Score:</strong>
+                                {{ application.ai_resume_score if application.ai_resume_score is not none else "Not available" }}{% if application.ai_resume_score is not none %}/100{% endif %}
+                            </p>
+                            <p><strong>Job Match:</strong>
+                                {{ application.job_match_score if application.job_match_score is not none else "Not available" }}{% if application.job_match_score is not none %}%{% endif %}
+                            </p>
+                            <p><strong>Experience:</strong>
+                                {{ application.candidate_experience if application.candidate_experience is not none else "Not available" }}
+                            </p>
+                            <p><strong>Applied:</strong>
+                                {{ application.applied_at.strftime('%d %b %Y') if application.applied_at else "Date unavailable" }}
+                            </p>
+                            <p><strong>Current Status:</strong> {{ application.status or "Applied" }}</p>
+                        </div>
+
+                        {% if application.matching_skills %}
+                            <strong>Matching Skills</strong>
+                            <div class="skills">
+                                {% for skill in application.matching_skills %}
+                                    <span class="skill">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if application.missing_skills %}
+                            <p><strong>Missing Skills:</strong> {{ application.missing_skills | join(', ') }}</p>
+                        {% endif %}
+
+                        <form class="status-form" method="POST"
+                              action="{{ url_for('update_application_status', application_id=application._id) }}">
+                            <select name="status" aria-label="Application status">
+                                <option value="Applied" {% if application.status == 'Applied' %}selected{% endif %}>Applied</option>
+                                <option value="Under Review" {% if application.status == 'Under Review' %}selected{% endif %}>Under Review</option>
+                                <option value="Shortlisted" {% if application.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit">Update Status</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">
+                <h2>No Applications Found</h2>
+                <p>Applications for jobs you posted will appear here.</p>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>
+```

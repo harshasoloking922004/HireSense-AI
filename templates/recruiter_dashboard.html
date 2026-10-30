@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recruiter Dashboard | HireSense AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .recruiter-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .recruiter-header {
+            margin-bottom: 30px;
+        }
+
+        .recruiter-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .recruiter-header p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .recruiter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .recruiter-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .recruiter-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .recruiter-card h2 {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .recruiter-card p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .dashboard-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dashboard-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .dashboard-btn.secondary {
+            background: #374151;
+        }
+
+        .dashboard-btn.secondary:hover {
+            background: #111827;
+        }
+
+        @media (max-width: 700px) {
+            .recruiter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recruiter-container {
+                width: 94%;
+                margin: 30px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="dashboard-navbar">
+
+        <div class="logo">
+            Hire<span>Sense</span> AI
+        </div>
+
+        <div class="dashboard-nav-right">
+
+            <span>
+                Welcome, {{ name }}
+            </span>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="recruiter-container">
+
+        <div class="recruiter-header">
+
+            <h1>
+                Recruiter Dashboard
+            </h1>
+
+            <p>
+                Manage job postings and review candidates using
+                HireSense AI resume analysis.
+            </p>
+
+        </div>
+
+
+        <div class="recruiter-grid">
+
+            <!-- Post Job -->
+            <div class="recruiter-card">
+
+                <div class="recruiter-icon">
+                    📢
+                </div>
+
+                <h2>
+                    Post a Job
+                </h2>
+
+                <p>
+                    Create a new job with required skills,
+                    experience and job description.
+                </p>
+
+                <a
+                    href="/post-job"
+                    class="dashboard-btn"
+                >
+                    Post Job
+                </a>
+
+            </div>
+
+
+            <!-- View Candidates -->
+            <div class="recruiter-card">
+
+                <div class="recruiter-icon">
+                    👥
+                </div>
+
+                <h2>
+                    View Candidates
+                </h2>
+
+                <p>
+                    View candidates who have uploaded resumes
+                    and see their AI resume analysis.
+                </p>
+
+                <a
+                    href="/recruiter-candidates"
+                    class="dashboard-btn"
+                >
+                    View Candidates
+                </a>
+
+            </div>
+
+
+            <!-- AI Candidate Ranking -->
+            <div class="recruiter-card">
+
+                <div class="recruiter-icon">
+                    🤖
+                </div>
+
+                <h2>
+                    AI Candidate Ranking
+                </h2>
+
+                <p>
+                    Compare candidates using AI resume scores,
+                    skills and job requirements.
+                </p>
+
+               <a
+    href="/ai-ranking"
+    class="dashboard-btn"
+>
+    Rank Candidates
+</a>
+
+            </div>
+
+
+            <!-- Manage Jobs -->
+            <div class="recruiter-card">
+
+                <div class="recruiter-icon">
+                    💼
+                </div>
+
+                <h2>
+                    Manage Jobs
+                </h2>
+
+                <p>
+                    Review your posted jobs and manage
+                    recruitment opportunities.
+                </p>
+
+                <a
+    href="{{ url_for('manage_jobs') }}"
+    class="dashboard-btn secondary"
+>
+    Manage Jobs
+</a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
